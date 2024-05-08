@@ -1,0 +1,69 @@
+<template>
+  <Teleport to="body">
+    <Transition name="slide">
+      <div
+        v-show="open"
+        class="min-w-[300px] h-[100%] bg-orange-300 absolute z-50 top-0 left-0"
+      ></div>
+    </Transition>
+  </Teleport>
+  <Teleport to="body">
+    <div
+      v-show="open && mask"
+      class="fixed left-0 right-0 bottom-0 top-0 bg-[rgba(0,0,0,.2)] z-40"
+      @click="closeDrawer"
+    ></div>
+  </Teleport>
+</template>
+<script>
+export default {
+  props: {
+    open: {
+      type: Boolean,
+      require: true,
+    },
+    mask: {
+      tyoe: Boolean,
+      default: () => true,
+    },
+    maskCloseable: {
+      tyoe: Boolean,
+      default: () => true,
+    },
+  },
+  setup(props, context) {
+    const closeDrawer = () => {
+      if (props.maskCloseable) {
+        context.emit("update:open", false);
+      } else {
+        context.emit("update:open", true);
+      }
+    };
+    return { closeDrawer };
+  },
+};
+/**
+ * transition =>Transition
+ */
+</script>
+<style scoped>
+.slide-enter-from {
+  transform: translateX(-100%);
+}
+.slide-enter-active {
+  transition: all ease-in-out 0.3s;
+}
+.slide-enter-to {
+  transform: translateX(0);
+}
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.slide-leave-active {
+  transition: all ease-in-out 0.3s;
+}
+.slide-leave-to {
+  transform: translateX(-100%);
+}
+</style>
