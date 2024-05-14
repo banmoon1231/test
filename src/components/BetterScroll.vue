@@ -5,32 +5,28 @@
     </div>
   </div>
 </template>
-<script>
+<script></script>
+<script setup>
+import { defineProps, ref, onMounted, watch } from "vue";
 import BScroll from "@better-scroll/core";
-import { onMounted, ref, watch, nextTick } from "vue";
-export default {
-  setup(props) {
-    const wrapper = ref(null);
-    onMounted(() => {
-      const bs = BScroll(wrapper.value, props.option);
-      // watch()
-      watch(
-        () => props.dep,
-        () => nextTick(bs.refresh)
-      );
-    });
-    return { wrapper };
+const wrapper = ref(null);
+onMounted(() => {
+  const bs = BScroll(wrapper.value, props.option);
+  // watch()
+  watch(
+    () => props.dep,
+    () => nextTick(bs.refresh)
+  );
+});
+const props = defineProps({
+  dep: {},
+  option: {
+    type: Object,
+    default: () => ({
+      scrollY: true,
+      click: true,
+    }),
   },
-  props: {
-    dep: {},
-    option: {
-      type: Object,
-      default: () => ({
-        scrollY: true,
-        click: true,
-      }),
-    },
-  },
-};
+});
 </script>
 <style></style>

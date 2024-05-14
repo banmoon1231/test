@@ -60,14 +60,16 @@
                     ></path>
                   </svg>
                 </div>
-                <span
-                  :class="
-                    checked
-                      ? 'text-[#f0f0f0] text-[3.5vw]'
-                      : 'text-[#383838] text-[3.5vw]'
-                  "
-                  >立刻登录</span
-                >
+                <router-link to="/login">
+                  <span
+                    :class="
+                      checked
+                        ? 'text-[#f0f0f0] text-[3.5vw]'
+                        : 'text-[#383838] text-[3.5vw]'
+                    "
+                    >立刻登录</span
+                  >
+                </router-link>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -1734,7 +1736,7 @@
           class="flex w-[190vw] mx-auto overflow-hidden h-[25vw] scroll-content relative"
         >
           <div
-            v-for="item in homepageDragonball"
+            v-for="(item, index) in homepageDragonball"
             :key="item.id"
             class="w-[19vw]"
           >
@@ -1742,6 +1744,9 @@
             <p class="text-center text-[2.78vw] w-[100%] mt-[-2vw]">
               {{ item.name }}
             </p>
+          </div>
+          <div class="absolute text-[20px] left-[8.2vw] top-[8vw] text-white">
+            {{ currentDate }}
           </div>
         </div>
       </BetterScroll>
@@ -1937,7 +1942,11 @@
             "
           >
             <div
-              class="w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]"
+              :class="
+                checked
+                  ? 'w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]'
+                  : 'w-[88vw] h-[80vw] rounded-md '
+              "
             >
               <div
                 class="flex items-center justify-between p-[4vw] text-[4vw] font-[800]"
@@ -1984,7 +1993,11 @@
               </div>
             </div>
             <div
-              class="w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]"
+              :class="
+                checked
+                  ? 'w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]'
+                  : 'w-[88vw] h-[80vw] rounded-md '
+              "
             >
               <div
                 class="flex items-center justify-between p-[4vw] dark:text-[#e6e6e9] text-[#374d5b] text-[4vw] font-[800]"
@@ -2033,7 +2046,11 @@
               </div>
             </div>
             <div
-              class="w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]"
+              :class="
+                checked
+                  ? 'w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]'
+                  : 'w-[88vw] h-[80vw] rounded-md '
+              "
             >
               <div
                 class="flex items-center justify-between p-[4vw] dark:text-[#e6e6e9] text-[#374d5b] text-[4vw] font-[800]"
@@ -2082,7 +2099,11 @@
               </div>
             </div>
             <div
-              class="w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]"
+              :class="
+                checked
+                  ? 'w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]'
+                  : 'w-[88vw] h-[80vw] rounded-md '
+              "
             >
               <div
                 class="flex items-center justify-between p-[4vw] dark:text-[#e6e6e9] text-[#374d5b] text-[4vw] font-[800]"
@@ -2131,7 +2152,11 @@
               </div>
             </div>
             <div
-              class="w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]"
+              :class="
+                checked
+                  ? 'w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]'
+                  : 'w-[88vw] h-[80vw] rounded-md '
+              "
             >
               <div
                 class="flex items-center justify-between p-[4vw] dark:text-[#e6e6e9] text-[#374d5b] text-[4vw] font-[800]"
@@ -2180,7 +2205,11 @@
               </div>
             </div>
             <div
-              class="w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]"
+              :class="
+                checked
+                  ? 'w-[88vw] h-[80vw] rounded-md shadow-[0px_10px_10px_5px_#fff]'
+                  : 'w-[88vw] h-[80vw] rounded-md '
+              "
             >
               <div
                 class="flex items-center justify-between p-[4vw] dark:text-[#e6e6e9] text-[#374d5b] text-[4vw] font-[800]"
@@ -2485,6 +2514,7 @@
 </template>
 <script>
 import { ref, computed } from "vue";
+// import Date from "datejs";
 
 import {
   getHomePageData,
@@ -2524,6 +2554,7 @@ export default {
     const AllTheCharts10 = ref();
     const AllTheCharts11 = ref();
     const AllTheCharts12 = ref();
+    const currentDate = ref(new Date().getDate());
     (async () => {
       // 如何集中捕获请求错误？
       try {
@@ -2615,6 +2646,8 @@ export default {
     const checked = ref(false);
     const isDark = () => {
       console.log(checked.value);
+
+      // 设置日期
     };
 
     return {
@@ -2655,6 +2688,7 @@ export default {
       onClose,
       checked,
       isDark,
+      currentDate,
     };
   },
 };
@@ -2662,13 +2696,5 @@ export default {
 <style>
 .imgred {
   filter: contrast(0%) sepia(100%) hue-rotate(-50deg) saturate(750%);
-}
-[data-theme="dark"] {
-  --bg-color: #25272e;
-  --text-color: #fff;
-}
-:root {
-  --bg-color: #fff;
-  --text-color: #000;
 }
 </style>

@@ -17,48 +17,42 @@
     </div>
   </div>
 </template>
-<script>
-import { ref, computed } from "vue";
-export default {
-  setup(props, context) {
-    const isPasswordVisible = ref(false);
-    const inputHandler = (e) => {
-      context.emit("update:value", e.target.value);
-    };
-    const clear = () => {
-      context.emit("update:value", "");
-    };
-    const isClearable = computed(() => {
-      return props.clearable && props.value.length > 0;
-    });
-    const type = computed(() => {
-      if (props.showPassword && !isPasswordVisible) {
-        return "password";
-      } else {
-        return "text";
-      }
-    });
-    return { isPasswordVisible, inputHandler, clear, isClearable, type };
-  },
-  // emits配置的第二种写法
-  // 第一种：emits: ["abc"] 这个只是表明有abc这样的自定义事件存在 没有考虑传递参数！！！
-  emits: ["update:value"],
-  props: {
-    value: {
-      required: true,
-      type: String,
-    },
-    clearable: {
-      default: false,
-      type: Boolean,
-    },
-    showPassword: {
-      default: false,
-      type: Boolean,
-    },
-  },
+<script setup>
+import { ref, computed, defineProps, defineEmits } from "vue";
+const isPasswordVisible = ref(false);
+const inputHandler = (e) => {
+  emit("update:value", e.target.value);
 };
+const clear = () => {
+  emit("update:value", "");
+};
+const isClearable = computed(() => {
+  return props.clearable && props.value.length > 0;
+});
+const type = computed(() => {
+  if (props.showPassword && !isPasswordVisible) {
+    return "password";
+  } else {
+    return "text";
+  }
+});
+const props = defineProps({
+  value: {
+    required: true,
+    type: String,
+  },
+  clearable: {
+    default: false,
+    type: Boolean,
+  },
+  showPassword: {
+    default: false,
+    type: Boolean,
+  },
+});
+const emit = defineEmits(["update:value"]);
 </script>
+
 <style scoped>
 .ipt {
   position: relative;

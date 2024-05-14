@@ -15,37 +15,33 @@
     ></div>
   </Teleport>
 </template>
-<script>
-export default {
-  props: {
-    open: {
-      type: Boolean,
-      require: true,
-    },
-    mask: {
-      tyoe: Boolean,
-      default: () => true,
-    },
-    maskCloseable: {
-      tyoe: Boolean,
-      default: () => true,
-    },
-  },
-  setup(props, context) {
-    const closeDrawer = () => {
-      if (props.maskCloseable) {
-        context.emit("update:open", false);
-      } else {
-        context.emit("update:open", true);
-      }
-    };
-    return { closeDrawer };
-  },
+<script setup>
+// 可以不引入definProps和defineEmits
+// import { defineProps, defineEmits } from "vue";
+const closeDrawer = () => {
+  if (props.maskCloseable) {
+    emit("update:open", false);
+  } else {
+    emit("update:open", true);
+  }
 };
-/**
- * transition =>Transition
- */
+const props = defineProps({
+  open: {
+    type: Boolean,
+    require: true,
+  },
+  mask: {
+    tyoe: Boolean,
+    default: () => true,
+  },
+  maskCloseable: {
+    tyoe: Boolean,
+    default: () => true,
+  },
+});
+const emit = defineEmits(["update:open"]);
 </script>
+
 <style scoped>
 .slide-enter-from {
   transform: translateX(-100%);

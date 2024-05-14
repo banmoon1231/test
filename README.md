@@ -128,3 +128,28 @@ export default {
 
 28.watchEffect 99% 除了(第一次不执行、获取监听数据改变前的值) 使用 watch
 29.nextTick 是一个组合式 API 需要按需引入 然后使用
+
+30.Vue.use() =>app.use() this 的执行只在函数调用时才能确定
+
+31. .sync 修饰符 弃用 v-model 兼容了
+
+32. transition =>Transition
+
+33.Teleport 新的内置组件
+
+34.Suspense 组件作用(等待组件异步资源准备完成后渲染组件 异步加载过程中我们可以定义加载 loading)
+(1).Suspense 提供两个插槽
+default (渲染具有异步依赖[`async setup(){}`]主体)
+fallback 在异步任务执行期间(pending->resolve)渲染的内容 一般用来渲染 loading
+
+35.组合函数：开发者将 vue3 的 API 重新组合形成一个新的具有某种功能的 API ，从而形成逻辑复用
+
+36 如何在<script setup>定义组件的 props 以及使用组件传入 props
+// 答： defineProps
+// 如何在<script setup>使用组件的 attrs 属性
+// 答： useAttrs
+// 如何在<script setup>定义组件的自定义事件以及触发组件的自定义事件呢
+// 答： definedEmits
+
+37.两个 vite 插件 (unpligin-auto-import、unplugin-vue-components)
+unpligin-auto-import 自动帮开发者引入 vue 及其生态中提供的组合式 API (例如:onMounted ref reactive watch 等)

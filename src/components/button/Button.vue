@@ -1,49 +1,37 @@
 <template>
-  <div :class="['btn', `btn-${type}`, { 'btn-round': round }]" @click="trigger">
+  <div
+    :class="['btn', `btn-${type}`, { 'btn-round': round }]"
+    @click="emit('click')"
+  >
     <slot />
   </div>
 </template>
-<script>
-export default {
-  // 通过emits选项区分自定义事件
-  // 只有在emits选项中配置的事件才被认定为自定义事件 否则按原生事件处理
-  emits: ["click"],
-  // 在vue3中props的定义没有变化
-  // 获取组件的porps属性值 获取组件的attrs值 触发自定义事件有变化
-  setup(props, context) {
-    // console.log(this.$attrs.abc);
-    const trigger = () => context.emit("click");
-    // 在Button组件内部定义了一个变量a1 一个方法f1
-    const a1 = 123;
-    const f1 = () => console.log(a1);
-    // 一把锁
-    // 当组件内部不主动暴露数据 当前组件数据可以直接获取(props return数据) 否则只能获取主动暴露的数据
-
-    // 需求：让组件所有数据都私有化 不能被外界访问   (context.expose({}))
-    context.expose({ a1, f1 });
-    // a1和f1 不返回的情况下
-    return { trigger };
-  },
-  props: {
-    type: {
-      default: "default",
-      validator(value) {
-        return [
-          "primary",
-          "success",
-          "info",
-          "warning",
-          "danger",
-          "default",
-        ].includes(value);
-      },
-    },
-    round: {
-      type: Boolean,
-      default: false,
+<script setup>
+// 需要用到define的都可以不用导入 需要用到use的需要导入
+// 除了props attrs slots expose emits之外的其他选项都可以用defineOptions来声明
+// defineOptions的使用场景：配置需求超出了Vue3提供的API，那么可以使用它用Vue2的对应的选项配置兼容
+// 比如在Vue3的API中没有定义组件名称的API  此时就可以使用defineOtions来提供name属性
+// import { defineProps, defineEmits, defineExpose, useAttrs } from "vue";
+const props = defineProps({
+  type: {
+    default: "default",
+    validator(value) {
+      return [
+        "primary",
+        "success",
+        "info",
+        "warning",
+        "danger",
+        "default",
+      ].includes(value);
     },
   },
-};
+  round: { type: Boolean, default: false },
+});
+const emit = defineEmits(["click"]);
+const a = 1;
+const b = 2;
+defineExpose({ a, b });
 </script>
 <style>
 .btn {
