@@ -9,6 +9,7 @@ import Input from "./components/Input.vue";
 import drawer from "./components/drawer";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/reset.css";
+import store from "./store";
 
 const app = createApp(App);
 app.component("co-button", Button);
@@ -20,7 +21,7 @@ app.use(drawer);
 // app.component(组件名， 组件配置)；
 // createApp().component(组件名， 组件配置)；
 
-app.use(router).use(Antd).mount("#app");
+app.use(router).use(Antd).use(store).mount("#app");
 
 /**
  * vue3和vue2生命周期的对应关系

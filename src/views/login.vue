@@ -28,10 +28,28 @@
       class="w-[38vw] mx-auto mt-[7vw] mb-[9vw]"
     />
     <div class="relative">
-      <img :src="getImage" class="w-[40vw] h-[40vw] m-auto relative z-[1]" />
-      <!---->
-      <div class="text-[3vw] text-[#100A09] text-center mt-[10vw]">
-        使用<span class="text-[#2C6AA1] mx-[1.5vw]">网易云音乐APP</span>扫码登录
+      <div v-show="code == 801">
+        <img :src="getImage" class="w-[40vw] h-[40vw] m-auto relative z-[1]" />
+        <!---->
+        <div class="text-[3vw] text-[#100A09] text-center mt-[10vw]">
+          使用<span class="text-[#2C6AA1] mx-[1.5vw]">网易云音乐APP</span
+          >扫码登录
+        </div>
+      </div>
+      <div v-show="code == 802">
+        <img
+          src="https://admirable-jalebi-ce44af.netlify.app/static/queding.png"
+          alt=""
+          class="h-[41vw] mx-auto"
+        />
+        <h1
+          class="h-[17vw] leading-[17vw] text-center text-[4vw] text-[#04090C]"
+        >
+          扫描成功
+        </h1>
+        <p class="text-[#0F1619] text-[3.4vw] text-center">
+          请在手机上确认登录
+        </p>
       </div>
     </div>
     <div class="fixed bottom-0">
@@ -47,11 +65,17 @@
 // import { ref } from "vue";
 import { onMounted, onUpdated, watchEffect, onUnmounted } from "vue";
 import { useRequest } from "../hooks";
+import { useRouter } from "vue-router";
+// import { createPinia } from "pinia";
+// import PersistPlugin from "pinia-plugin-persistedstate";
+// import { defineStore } from "pinia";
+
 import {
   getLoginImageKey,
   getLoginImage,
   getStatusImage,
 } from "../service/index";
+
 // import { useRequest } from "../hooks";
 // const { data: unikey } = useRequest(getLoginImageKey, {
 //   formatResult(response) {
@@ -59,7 +83,10 @@ import {
 //   },
 
 // });
+// 时间戳
+
 const resKey = ref();
+const router = useRouter();
 // resKey.value = unikey;
 // console.log(unikey);
 // const { data: getImage } = useRequest(() =>
@@ -84,7 +111,7 @@ const getImage = ref();
 // 获取当前时间戳
 const getTime = new Date();
 const getNewTime = ref();
-
+getNewTime.value = getTime.getTime();
 (async () => {
   try {
     // key
@@ -101,7 +128,8 @@ const getNewTime = ref();
     console.log(resKey.value);
     //
     const resStatus = await getStatusImage({
-      key: resKey?.value,
+      key: resKey.value,
+      timestamp: getNewTime?.value,
     });
     console.log(resStatus);
   } catch (error) {
@@ -115,24 +143,25 @@ const error = ref(false);
 const data = ref(null);
 let intervalId; // 用于存储轮询的定时器ID
 
-watchEffect(() => {
-  getNewTime.value = getTime.getTime();
-  console.log(getNewTime.value);
-});
-
+// const store = createPinia();
+// store.use(PersistPlugin);
+const code = ref();
 const poll = () => {
-  getStatusImage({ key: resKey.value })
+  getNewTime.value = new Date().getTime();
+  getStatusImage({ key: resKey.value, timestamp: getNewTime?.value })
     .then((response) => {
       const status = response.data.code;
+      code.value = response.data.code;
       if (status === 800) {
         // 二维码过期
         clearInterval(intervalId); // 清除轮询
         error.value = true; // 设置错误状态
       } else if (status === 803) {
         // 授权登录成功
+        console.log(response.data.cookie);
+        localStorage.setItem("userCookie", response.data.cookie);
+        router.push("/personalCenter");
         clearInterval(intervalId); // 清除轮询
-        data.value = response.data.code; // 设置数据状态
-      } else {
       }
     })
     .catch(() => {
@@ -152,4 +181,6 @@ onMounted(() => {
 onUnmounted(() => {
   clearInterval(intervalId); // 组件卸载时清除轮询
 });
+
+/// 存储cookie
 </script>

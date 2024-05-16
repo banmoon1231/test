@@ -55,3 +55,28 @@ export const getMusicUrl = (params) => request.get("/song/url/v1", { params });
 
 // 获取歌词
 export const musicWords = (params) => request.get("/lyric", { params });
+
+// 获取登录状态
+export const getLoginStatus = (params) =>
+  request.get("/login/status", { params });
+
+// 获取账号信息
+export const getUserInfo = (params) => request.get("/user/account", { params });
+
+// 获取用户信息
+export const getUserList = (params) => request.get("/user/detail", { params });
+
+// 获取用户等级信息
+export const getUserLevel = (params) => request.get("/user/level", { params });
+
+// 获取用户关注
+export const getUserFocus = (params) =>
+  request.get("/user/follows", { params });
+
+// 获取用户粉丝
+export const getUserFans = (params) =>
+  request.get("/user/followeds", { params });
+
+// 获取用户歌单
+export const getUserSongs = (params) =>
+  request.get("/user/playlist", { params });

@@ -14,6 +14,7 @@
 import { ref, watchEffect, watch } from "vue";
 import { useFullscreen, useMousePosition, useRequest } from "@/hooks";
 import { getHomePageData } from "@/service";
+import { useUserStore } from "../store/user";
 export default {
   setup() {
     const ele = ref();
@@ -36,6 +37,8 @@ export default {
       }
     );
     watchEffect(() => console.log(data.value));
+    const userInfo = useUserStore();
+    console.log(userInfo);
     return { x, y, ele, toggle, isFullscreen, run, updateA, updateB };
   },
 };
