@@ -36,6 +36,10 @@ export const getStatusImage = (params) =>
 // 获取热搜详情
 export const getHotList = () => request.get("/search/hot/detail");
 
+// 获取搜索列表
+export const getCloudMusic = (params) =>
+  request.get("/cloudsearch", { params });
+
 // 获取MV排行
 export const getMvCharts = (params) => request.get("/top/mv", { params });
 

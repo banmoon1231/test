@@ -1,6 +1,5 @@
 <template>
   <div class="bg-[#F4F4F4] dark:bg-[#1a1c23] h-[100vh] overflow-auto pb-[12vw]">
-    <div>son:{{ message }}</div>
     <div class="w-[91vw] h-[20vw] mx-auto flex justify-between items-center">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -20,6 +19,8 @@
       <div class="relative">
         <label for=""
           ><input
+            @input="getMusicSongs(inputValue)"
+            v-model="inputValue"
             placeholder="Beyond"
             type="text"
             class="dark:border-2 dark:border-[#31333a] dark:bg-[#31333a] dark:text-[#e9e9e9] text-[3vw] pl-[11vw] bg-white opacity-0.2 text-[#9b9b9b] w-[72vw] h-[10vw] border-2 border-[#fff] rounded-[25px]"
@@ -52,6 +53,11 @@
         搜索
       </div>
     </div>
+    <ul>
+      <li v-for="item in musicList">
+        {{ item.name }}
+      </li>
+    </ul>
     <div class="flex mt-[3vw]">
       <div>
         <ul class="flex items-center justify-between">
@@ -172,8 +178,7 @@
 </template>
 <script>
 import BetterScroll from "../../../components/BetterScroll.vue";
-import { theCharts, theChartsList } from "../../../service";
-import { useRequest } from "../../../hooks";
+import { theCharts, theChartsList, getCloudMusic } from "../../../service";
 // 什么是异步依赖
 // async setup()
 const delay = (time = 3000) => {
@@ -192,7 +197,6 @@ export default {
     const musicData = ref([]);
     const musicId = ref();
     message.value = await delay(3000);
-    // const { data, loading, error } = useRequest(theCharts);
     const res = await theCharts();
     chartsData.value = res.data.list;
     console.log(res);
@@ -209,8 +213,23 @@ export default {
     // });
 
     // 获取榜单上前20首歌
+    const inputValue = ref("");
+    const musicList = ref([]);
 
-    return { message, chartsData, musicData };
+    const getMusicSongs = async (val) => {
+      const getSongs = await getCloudMusic({ keywords: val });
+      musicList.value = getSongs;
+      console.log(musicList.value);
+    };
+
+    return {
+      message,
+      chartsData,
+      musicData,
+      inputValue,
+      getMusicSongs,
+      musicList,
+    };
   },
 };
 </script>

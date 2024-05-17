@@ -160,7 +160,7 @@ const poll = () => {
         // 授权登录成功
         console.log(response.data.cookie);
         localStorage.setItem("userCookie", response.data.cookie);
-        router.push("/personalCenter");
+        router.push("/sup");
         clearInterval(intervalId); // 清除轮询
       }
     })

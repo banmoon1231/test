@@ -10,12 +10,14 @@ import drawer from "./components/drawer";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/reset.css";
 import store from "./store";
+import moment from "moment";
 
 const app = createApp(App);
 app.component("co-button", Button);
 app.component("Input", Input);
 
 app.use(drawer);
+app.config.globalProperties.$moment = moment;
 
 // Vue.component(组件名， 组件配置)；
 // app.component(组件名， 组件配置)；
